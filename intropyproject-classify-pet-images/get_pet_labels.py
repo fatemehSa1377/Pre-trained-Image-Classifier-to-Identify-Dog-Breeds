@@ -42,4 +42,16 @@ def get_pet_labels(image_dir):
     """
     # Replace None with the results_dic dictionary that you created with this
     # function
-    return None
+
+    file_name = [name for name in listdir(image_dir) if name[0] != "."]
+    sample_list = []
+    results_dic = dict()
+    for name in file_name:
+        ''.join([i for i in name if not i.isdigit()])
+        if name not in sample_list:
+            main,end = name.split(".")
+            sample_list.append(main.lower().replace('_'," ").replace('0',' ').replace('2',' ').replace('3',' ').replace('4',' ').replace('5',' ').replace('6',' ').replace('7',' ').replace('8',' ').replace('9',' ').replace('1',' ').strip())
+    for i in range(0,len(file_name)):
+        results_dic[file_name[i]] = [sample_list[i]]
+    return results_dic
+
