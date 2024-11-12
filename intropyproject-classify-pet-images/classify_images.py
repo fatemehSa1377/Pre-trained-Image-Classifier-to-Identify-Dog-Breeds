@@ -65,14 +65,36 @@ def classify_images(images_dir, results_dic, model):
      Returns:
            None - results_dic is mutable data type so no return needed.         
     """
-    for key in results_dic:
-        model_label = ""
-        model_label = classifier(images_dir+"/"+key,model)
-        model_label = model_label.lower()
-        model_label = model_label.strip()
-        truth = results_dic[key][0]
-        if truth in model_label:
-            results_dic[key].extend([model_label,1])
-        else:
-            results_dic[key].extend([model_label,0])
+    for key, value in results_dic.items():  # Use items() for clarity in accessing key-value pairs
+
+      image_path = f"{images_dir}{key}"  # Using f-string for string concatenation
+      model_label = classifier(image_path, model).lower().strip()  # Combine function call with formatting
+
+      truth = value[0]  # Access 'truth' more directly
+
+      # Simplified if-else by directly appending the match status
+      match = int(truth in model_label)
+      results_dic[key].extend([model_label, match])
+
+      # Testing output if flag_test is True
+      if 'flag_test' in locals() and flag_test:
+          print(results_dic[key])
+
+# Return statement removed since None is the default return
+
+if __name__ == "__main__":
+
+    from get_input_args import get_input_args
+    from get_pet_labels import get_pet_labels
+    print("------------ testing ------------")
+
+    # Collect inputs
+    args = get_input_args()
+    image_dir, model = args.dir, args.arch
+    results_dic = get_pet_labels(image_dir)
+
+    flag_test = True  # Set testing flag
+    classify_images(image_dir, results_dic, model)
+
+
      
